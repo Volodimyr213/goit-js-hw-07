@@ -1,7 +1,7 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
-console.log(galleryItems);
+
 const ulHtml = document.querySelector(".gallery");
 // ulHtml.addEventListener("click",startModal);
 
@@ -13,7 +13,7 @@ function makeGalery(elems){
      <img
        class="gallery__image"
        src="${preview}"
-       data-source="large-image.jpg"
+       data-source="${original}"
        alt="${description}"
      />
    </a>
@@ -25,12 +25,28 @@ ulHtml.insertAdjacentHTML('beforeend',makeGalery(galleryItems))
 
 // ====================Marcup====================
 
-ulHtml.addEventListener('click', makeModal)
+ulHtml.addEventListener('click', makeModalFn)
 
-function makeModal(evt) {
+function makeModalFn(evt) {
     evt.preventDefault()
     if(!evt.target.classList.contains("gallery__image")){
           return
     }
-    console.log(evt.target.dataset.source)
+   const urlImg = evt.target.dataset.source
+
+   const instance = basicLightbox.create(`
+  <img src="${urlImg}" width="800" height="600" >
+`)
+instance.show()
+
+ulHtml.addEventListener('keydown',modalCloseFn)
+
+function modalCloseFn(evt){
+    if(evt.code === "Escape"){
+       instance.close()
+    };
+ 
+};
+
+
 };
